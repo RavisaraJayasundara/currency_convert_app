@@ -1,16 +1,47 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PaperProvider} from 'react-native-paper';
-import Home from './currrencyconverterapp/components/Home';
+import { PaperProvider, Text, TextInput, Divider } from 'react-native-paper';
 
 export default function App() {
+  const [lkr, setLkr] = useState('');
+  const [usd, setUsd] = useState('');
+  const exchangeRate = 0.0034;
+
+  const handleLKR = (value) => {
+    setLkr(value);
+    setUsd((value * exchangeRate).toFixed(4));
+  }
+
+  const handleUSD = (value) => {
+    setUsd(value);
+    setLkr((value / exchangeRate).toFixed(4));
+  }
+
   return (
-    <PaperProvider>
-    <View style={styles.container}>
-      <Home></Home>
-      <StatusBar style="auto" />
-    </View>
-    </PaperProvider>
+    <>
+      <PaperProvider>
+        <View style={styles.container}>
+          <StatusBar style="auto" />
+          <Text style={styles.text} variant="headlineLarge">Currency Converter App</Text>
+          <Divider />
+          <TextInput style={styles.input}
+            label="Sri Lankan Rupee"
+            mode='outlined'
+            value={lkr}
+            onChangeText={handleLKR}
+            keyboardType="numeric"
+          />
+          <TextInput style={styles.input}
+            label="United States Dollar"
+            mode='outlined'
+            value={usd}
+            onChangeText={handleUSD}
+            keyboardType="numeric"
+          />
+        </View>
+      </PaperProvider>
+    </>
   );
 }
 
